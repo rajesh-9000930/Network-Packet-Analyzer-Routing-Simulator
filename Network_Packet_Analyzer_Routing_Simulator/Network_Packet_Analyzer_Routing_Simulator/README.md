@@ -1,105 +1,184 @@
-# Network Packet Analyzer & Intelligent Routing Simulator
+# Network Packet Analyzer and Intelligent Routing Simulator
 
-A C++17 portfolio project demonstrating IPv4 packet parsing, TCP/UDP/ICMP protocol identification,
-and shortest-path routing using Dijkstra's algorithm.
+## Overview
 
-## Features
+The **Network Packet Analyzer and Intelligent Routing Simulator** is a C++17-based networking project designed to analyze IPv4 packet data and simulate intelligent network routing.
 
-- Parse an IPv4 packet supplied as hexadecimal bytes.
-- Validate basic IPv4 header properties and packet length.
-- Display source/destination IPv4 addresses, protocol, TTL, header length and total length.
-- Extract TCP/UDP source and destination ports when their headers are present.
-- Simulate a network topology and calculate the lowest-cost route with Dijkstra's algorithm.
-- Include a built-in demo and sample packet.
+The application extracts and interprets important information from IPv4 packet headers, identifies network protocols, retrieves TCP/UDP port details, and calculates optimal network paths using Dijkstra's shortest-path algorithm.
 
-> **Scope and safety:** This is an educational packet parser and routing simulator. It does not
-> capture live traffic, modify network routes, or transmit packets. It analyzes packet bytes
-> supplied by the user. Live capture can be added later with libpcap/Npcap and appropriate
-> permissions.
+This project demonstrates practical concepts of computer networking, packet structure analysis, routing algorithms, and systems programming.
 
-## Requirements
+## Key Features
 
-- C++17 compiler (GCC 9+, Clang 10+, or a recent MSVC)
-- CMake 3.16+
+- **IPv4 Packet Analysis:** Parses IPv4 packet data provided in hexadecimal format.
+- **IP Address Extraction:** Identifies source and destination IPv4 addresses.
+- **Protocol Identification:** Detects TCP, UDP, and ICMP protocols.
+- **Header Information Analysis:** Extracts TTL, header length, and total packet length.
+- **Port Number Extraction:** Retrieves source and destination port numbers from TCP and UDP packets.
+- **Intelligent Routing Simulation:** Uses Dijkstra's algorithm to determine the shortest path between network nodes.
+- **Route Cost Calculation:** Calculates the total cost of the selected network path.
+- **Input Validation:** Handles invalid or incomplete packet data.
 
-## Build
+## Technologies Used
 
-### Linux / macOS
+| Technology | Purpose |
+|---|---|
+| C++17 | Core application development |
+| Data Structures | Packet processing and graph representation |
+| Dijkstra's Algorithm | Shortest-path routing |
+| CMake | Build configuration |
+| Git & GitHub | Version control and project management |
+
+## Project Architecture
+
+The project is organized into separate modules to improve code readability, maintainability, and reusability.
+
+```text
+Network-Packet-Analyzer-and-Intelligent-Routing-Simulator/
+│
+├── include/
+│   ├── packet_analyzer.hpp
+│   └── routing.hpp
+│
+├── src/
+│   ├── main.cpp
+│   ├── packet_analyzer.cpp
+│   └── routing.cpp
+│
+├── samples/
+│   └── sample_ipv4_tcp.hex
+│
+├── tests/
+│   └── manual_test_cases.md
+│
+├── CMakeLists.txt
+├── README.md
+└── .gitignore
+```
+
+## How It Works
+
+### 1. Packet Input
+The application accepts IPv4 packet data in hexadecimal format.
+
+### 2. Packet Parsing
+The packet analyzer processes the input and extracts:
+- Source IPv4 address
+- Destination IPv4 address
+- Protocol type
+- Time to Live (TTL)
+- IP header length
+- Total packet length
+
+### 3. Protocol Analysis
+The application identifies the protocol and extracts TCP or UDP source and destination port numbers when available.
+
+### 4. Routing Simulation
+The routing module represents the network as a weighted graph. Dijkstra's shortest-path algorithm calculates the optimal route between the selected source and destination nodes.
+
+### 5. Result Display
+The application displays the extracted packet information and the calculated routing path with its total cost.
+
+## Installation and Execution
+
+### Prerequisites
+
+- C++17-compatible compiler
+- CMake 3.16 or later
+- Git
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/YOUR-USERNAME/Network-Packet-Analyzer-and-Intelligent-Routing-Simulator.git
+```
+
+### Step 2: Navigate to the Project Directory
+
+```bash
+cd Network-Packet-Analyzer-and-Intelligent-Routing-Simulator
+```
+
+### Step 3: Create a Build Directory
 
 ```bash
 cmake -S . -B build
+```
+
+### Step 4: Build the Project
+
+```bash
 cmake --build build
 ```
 
-### Windows (Visual Studio Build Tools)
+### Step 5: Run the Application
 
-```powershell
-cmake -S . -B build
-cmake --build build --config Release
-```
-
-## Run
-
-The executable is named `network_analyzer` (Windows: `network_analyzer.exe`).
+**Windows:**
 
 ```bash
-# Built-in packet + routing demonstration
-./build/network_analyzer demo
-
-# Analyze an IPv4 packet represented as hex bytes
-./build/network_analyzer analyze "45 00 00 28 1c 46 40 00 40 06 b1 e6 c0 a8 01 0a c0 a8 01 01 30 39 00 50 00 00 00 01 00 00 00 00 50 02 20 00 91 7c 00 00"
-
-# Find a route in the sample topology
-./build/network_analyzer route A D
+.\build\Debug\network_simulator.exe
 ```
 
-For a packet file, place one hex packet on a line and pass its contents as the `analyze` argument.
-The sample is also available at `samples/sample_ipv4_tcp.hex`.
+If your build configuration places the executable directly inside `build`, use:
 
-## Sample output
+```bash
+.\build\network_simulator.exe
+```
 
-Packet analysis reports:
-- IPv4 source and destination
-- Protocol (TCP, UDP, ICMP, or numeric unknown)
-- TTL, header length, total length
-- TCP/UDP ports when present
+**Linux:**
 
-Routing reports the route, total path cost, and each hop.
-
-## Project structure
+```bash
+./build/network_simulator
+```
+** Sample Output
 
 ```text
-include/
-  packet_analyzer.hpp
-  routing.hpp
-src/
-  main.cpp
-  packet_analyzer.cpp
-  routing.cpp
-samples/
-  sample_ipv4_tcp.hex
-tests/
-  manual_test_cases.md
-CMakeLists.txt
-README.md
+NETWORK PACKET ANALYZER
+
+Source IP      : 192.168.1.10
+Destination IP : 192.168.1.1
+Protocol       : TCP
+TTL            : 64
+Source Port    : 12345
+Destination Port: 80
+
+INTELLIGENT ROUTING SIMULATOR
+
+Shortest Path  : A -> C -> B -> D -> E -> F
+Total Cost     : 13
 ```
 
-## Resume description (use after building and testing)
+*The output above illustrates the included sample packet and routing demonstration.*
 
-**Network Packet Analyzer and Intelligent Routing Simulator**  
-* C++17, IPv4, TCP/UDP/ICMP, Data Structures & Algorithms, Dijkstra's Algorithm, CMake, Git
+## Learning Outcomes
 
-- Built a C++17 utility to parse IPv4 packet headers and identify source/destination addresses and network protocols.
-- Extracted TCP/UDP port information and validated packet header lengths and packet sizes.
-- Implemented a graph-based routing simulator using Dijkstra's shortest-path algorithm to calculate minimum-cost paths.
-- Added command-line workflows and test cases for packet parsing and route calculation.
+Through this project, the following concepts are demonstrated:
 
-Only claim features you have personally compiled, run, understood, and can explain in an interview.
+- Understanding IPv4 packet structure and network protocols.
+- Implementing packet parsing using C++.
+- Working with TCP, UDP, and ICMP protocol concepts.
+- Applying graph data structures to network routing.
+- Implementing Dijkstra's shortest-path algorithm.
+- Organizing a modular C++ application using header and source files.
+- Building and managing projects using CMake and Git.
 
-## Suggested future enhancements
+## Current Scope and Limitations
 
-1. Add automated unit tests with GoogleTest or Catch2.
-2. Add live packet capture using libpcap (Linux/macOS) or Npcap (Windows).
-3. Add a topology editor and routing table updates.
-4. Add OSPF/BGP concepts as educational simulations (not production protocol implementations).
-5. Add performance benchmarks and CI with GitHub Actions.
+This is an educational packet analysis and routing simulation project.
+
+- Packet analysis uses hexadecimal packet data supplied to the application.
+- It does not currently capture live network traffic.
+- It does not modify actual network routing tables.
+- It does not transmit or intercept network packets.
+- It does not implement production routing protocols such as BGP or OSPF.
+
+## Future Enhancements
+
+- Integrate live packet capture using libraries such as libpcap or Npcap.
+- Add network traffic statistics and protocol distribution analysis.
+- Develop a graphical user interface for packet visualization.
+- Extend routing simulation with additional routing algorithms.
+- Explore dynamic routing protocol concepts such as OSPF and BGP.
+
+
+.
